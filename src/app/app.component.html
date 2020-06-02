@@ -1,0 +1,64 @@
+<div class="container">
+  <div class="list-container">
+
+    <div class="todo-container column-container">
+      <div class="list"
+           cdkDropList
+           #todoList="cdkDropList"
+           [cdkDropListData]="todos"
+           [cdkDropListConnectedTo]="[doneList, pendingList]"
+           (cdkDropListDropped)="onDrop($event)">
+        <h2>Source(s)</h2>
+        <mat-card *ngFor="let todo of todos" cdkDrag>
+          <mat-card-header>
+            <mat-card-title>{{todo.name}}</mat-card-title>
+            <mat-card-subtitle>{{todo.category}}</mat-card-subtitle>
+          </mat-card-header>
+        </mat-card>
+      </div>
+    </div>
+
+    <div class="done-container column-container">
+      <div class="list" [ngClass]="{'disableDiv': disableDivTwo == true }"
+           cdkDropList
+           #doneList="cdkDropList"
+           [cdkDropListData]="completed"
+           [cdkDropListConnectedTo]="todoList"
+           (cdkDropListDropped)="onDrop($event)"
+           (dropped)="test($event)"
+           >
+        <h2>Source - 1 </h2>
+        <mat-card *ngFor="let complete of completed" cdkDrag>
+          <mat-card-header>
+            <mat-card-title>{{complete.name}}</mat-card-title>
+            <mat-card-subtitle>{{complete.category}}</mat-card-subtitle>
+          </mat-card-header>
+        </mat-card>
+      </div>
+      <button *ngIf="disableDivTwo == true" class="btn btn-primary closeBtn" (click)="clearBoxOne()">
+        X
+      </button>
+    </div>
+
+    <div class="pending-container column-container">
+      <div class="list" [ngClass]="{'disableDiv': disableDivThree == true }"
+           cdkDropList
+           #pendingList="cdkDropList"
+           [cdkDropListData]="pending"
+           [cdkDropListConnectedTo]="todoList"
+           (cdkDropListDropped)="onDrag($event)"
+           > 
+        <h2>Source - 2 </h2>
+        <mat-card *ngFor="let pData of pending" cdkDrag>
+          <mat-card-header>
+            <mat-card-title>{{pData.name}}</mat-card-title>
+            <mat-card-subtitle>{{pData.category}}</mat-card-subtitle>
+          </mat-card-header>
+        </mat-card>
+      </div>
+      <button *ngIf="disableDivThree == true" class="btn btn-primary closeBtn" (click)="clearBoxTwo()">X</button>
+    </div>
+
+  </div>
+</div>
+
