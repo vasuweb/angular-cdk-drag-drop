@@ -41,45 +41,7 @@ export class AppComponent implements OnInit {
   
   completed= [];
   pending = [];
-  /*
-  completeds = [
-    {
-      name: 'Android',
-      category: 'Mobile Development'
-    },
-    {
-      name: 'MongoDB',
-      category: 'Databases'
-    },
-    {
-      name: 'ARKit',
-      category: 'Augmented Reality'
-    },
-    {
-      name: 'React',
-      category: 'Web Development'
-    }
-  ];
-  
-  pendings = [
-    {
-      name: 'AWS',
-      category: 'Amazon Web Services'
-    },
-    {
-      name: 'Node',
-      category: 'Node JS'
-    },
-    {
-      name: 'Flutter',
-      category: 'Mobile App Development'
-    },
-    {
-      name: 'Java',
-      category: 'Software development'
-    }
-  ];
-  */
+
   ngOnInit()
   {
     this.resetList();
@@ -117,7 +79,6 @@ export class AppComponent implements OnInit {
               event.previousIndex, event.currentIndex);
           }
         }
-        //console.log(this.completed);
     }
     this.resetList();
     this.disableDivTwo = (this.completed.length > 0) ? true : false;
@@ -125,9 +86,6 @@ export class AppComponent implements OnInit {
   
 
   onDrag(event: CdkDragDrop<string[]>) {
-    // console.log("oneToThreeLtR = "+this.oneToThreeLtR);
-    // console.log("oneToThreeRtL = "+this.oneToThreeRtL);
-    // console.log("event.previousContainer.id"+event.previousContainer.id);
     if(event.previousContainer.id == "cdk-drop-list-0") 
     {
       //moved left to right
@@ -141,7 +99,6 @@ export class AppComponent implements OnInit {
       }
     } else {
       //moved right to left
-      // console.log("inside else condition");
       if(this.oneToThreeRtL == 0)
       {
         this.oneToThreeRtL++;
