@@ -11,10 +11,10 @@
   float:right;
 }
 
-.disableDiv {
-  pointer-events: none;
-  opacity: 0.5;
-  background: #CCC;
+.sourceBox {
+  min-height:175px;
+  height:100%;
+  overflow: hidden;
 }
 
 h2 {

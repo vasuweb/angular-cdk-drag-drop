@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {CdkDragDrop, moveItemInArray, transferArrayItem, copyArrayItem} from '@angular/cdk/drag-drop';
+import {CdkDragDrop, CdkDragExit, moveItemInArray, transferArrayItem, copyArrayItem} from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-root',
@@ -7,15 +7,10 @@ import {CdkDragDrop, moveItemInArray, transferArrayItem, copyArrayItem} from '@a
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  public oneToThree:number = 0;
-  public oneToTwo:number = 0;
-  
-  public oneToTwoLtR:number = 0;
-  public oneToTwoRtL:number = 0;
   public oneToThreeLtR:number=0
   public oneToThreeRtL:number=0;
-  public disableDivTwo:boolean = false;
-  public disableDivThree:boolean = false;
+  public sourceOne:string='';
+  public sourceTwo:string='';
 
   mainList = [
     {
@@ -41,7 +36,7 @@ export class AppComponent implements OnInit {
   
   completed= [];
   pending = [];
-
+  
   ngOnInit()
   {
     this.resetList();
@@ -54,82 +49,87 @@ export class AppComponent implements OnInit {
     }, 0);    
   }
 
-
+  /*
+  This function is called when:  
+    Source(s) items drags into the Source-1 list.
+  */
   onDrop(event: CdkDragDrop<string[]>) {
       if (event.previousContainer !== event.container) { // NOT within the same block
+        
         if(event.previousContainer.id == "cdk-drop-list-0") 
         {
           //moved left to right
-          if(this.oneToTwoLtR == 0)
-          {
-            this.oneToTwoRtL = 0;
-            this.oneToTwoLtR++;
             copyArrayItem(event.previousContainer.data,
               event.container.data,
               event.previousIndex, event.currentIndex);
-          }
         } else {
           //moved right to left
-          if(this.oneToTwoRtL == 0)
-          {
-            this.oneToTwoRtL++;
-            this.oneToTwoLtR = 0;
-            transferArrayItem(event.previousContainer.data,
-              event.container.data,
-              event.previousIndex, event.currentIndex);
-          }
+          transferArrayItem(event.previousContainer.data,
+            event.container.data,
+            event.previousIndex, event.currentIndex);
+            this.sourceOne = null;
         }
     }
     this.resetList();
-    this.disableDivTwo = (this.completed.length > 0) ? true : false;
-  }
-  
-
-  onDrag(event: CdkDragDrop<string[]>) {
-    if(event.previousContainer.id == "cdk-drop-list-0") 
+    if(this.completed.length > 0)
     {
-      //moved left to right
-      if(this.oneToThreeLtR == 0)
+      this.deleteCompletedSet(1);
+      this.sourceOne = this.completed[0].name;
+    }
+  }
+
+  /*
+  This function is called when:  
+    Source(s) items drags into the Source-2 list.
+  */
+  onDrag(event: CdkDragDrop<string[]>) {
+    if (event.previousContainer !== event.container) { // NOT within the same block
+      if(event.previousContainer.id == "cdk-drop-list-0") 
       {
-        this.oneToThreeRtL = 0;
-        this.oneToThreeLtR++;
+        //moved left to right
         copyArrayItem(event.previousContainer.data,
           event.container.data,
           event.previousIndex, event.currentIndex);
-      }
-    } else {
-      //moved right to left
-      if(this.oneToThreeRtL == 0)
-      {
-        this.oneToThreeRtL++;
-        this.oneToThreeLtR = 0;
+      } else {
+        //moved right to left
         transferArrayItem(event.previousContainer.data,
           event.container.data,
           event.previousIndex, event.currentIndex);
+          this.sourceTwo = '';
       }
     }
     this.resetList();
-    console.log(this.pending.length);
-    this.disableDivThree = (this.pending.length > 0) ? true : false;
+    if(this.pending.length > 0)
+    {
+      this.deletePendingSet(1);
+      this.sourceTwo = this.pending[0].name;
+    }
   }
 
-  clearBoxOne()
+  // remove the item from the completed array list
+  deleteCompletedSet(index:number) {
+    if (index > 0) {
+        this.completed.splice(index, 1);
+    }        
+  }
+
+  // remove the item from the pending array list
+  deletePendingSet(index:number) {
+    if (index > 0) {
+        this.pending.splice(index, 1);
+    } else {
+      this.pending = [];
+    }
+  }
+
+  /*
+    This function is called when we drag items from source-2 to source(s) list items
+  */
+  removeSourceTwoItems(event: CdkDragExit<string[]>)
   {
-    this.oneToTwoRtL = 0;
-    this.oneToTwoLtR = 0;
-    this.completed = [];
-    this.disableDivTwo = false;
-  }
-
-  clearBoxTwo(){
-    this.oneToThreeLtR = 0;
-    this.oneToThreeRtL = 0;
-    this.pending = [];
-    this.disableDivThree = false;
-  }
-
-  test(event: CdkDragDrop<string[]>) {
-    console.log("testig");
+    this.sourceTwo = '';
+    this.deletePendingSet(1);
+    
   }
 
 }

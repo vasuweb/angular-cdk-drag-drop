@@ -19,13 +19,12 @@
     </div>
 
     <div class="done-container column-container">
-      <div class="list" [ngClass]="{'disableDiv': disableDivTwo == true }"
+      <div class="list sourceBox"
            cdkDropList
            #doneList="cdkDropList"
            [cdkDropListData]="completed"
            [cdkDropListConnectedTo]="todoList"
            (cdkDropListDropped)="onDrop($event)"
-           (dropped)="test($event)"
            >
         <h2>Source - 1 </h2>
         <mat-card *ngFor="let complete of completed" cdkDrag>
@@ -38,15 +37,17 @@
       <button *ngIf="disableDivTwo == true" class="btn btn-primary closeBtn" (click)="clearBoxOne()">
         X
       </button>
+      <p>{{sourceOne}}</p>
     </div>
 
     <div class="pending-container column-container">
-      <div class="list" [ngClass]="{'disableDiv': disableDivThree == true }"
+      <div class="list sourceBox"
            cdkDropList
            #pendingList="cdkDropList"
            [cdkDropListData]="pending"
            [cdkDropListConnectedTo]="todoList"
            (cdkDropListDropped)="onDrag($event)"
+           (cdkDropListExited)="removeSourceTwoItems($event)"
            > 
         <h2>Source - 2 </h2>
         <mat-card *ngFor="let pData of pending" cdkDrag>
@@ -57,6 +58,7 @@
         </mat-card>
       </div>
       <button *ngIf="disableDivThree == true" class="btn btn-primary closeBtn" (click)="clearBoxTwo()">X</button>
+      <p>{{sourceTwo}}</p>
     </div>
 
   </div>
